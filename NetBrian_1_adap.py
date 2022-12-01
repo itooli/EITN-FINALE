@@ -1,5 +1,12 @@
 from brian2 import *
 
+# prepare firing rate
+def bin_array(array, BIN, time_array):
+    N0 = int(BIN/(time_array[1]-time_array[0]))
+    N1 = int((time_array[-1]-time_array[0])/BIN)
+    return array[:N0*N1].reshape((N1,N0)).mean(axis=1)
+
+
 def func():
     start_scope()
 
@@ -156,84 +163,78 @@ def func():
     print('--##End simulation##--')
 
 
-    # Plots -------------------------------------------------------------------------------
+    # # Plots -------------------------------------------------------------------------------
 
-    Lt1G1=array(M2G1.t/ms)
-    Lt2G1=array(M3G1.t/ms)
-    Lt1G2=array(M2G2.t/ms)
-    Lt2G2=array(M3G2.t/ms)
-    LVG1=[]
-    LwG1=[]
-    LVG2=[]
-    LwG2=[]
+    # Lt1G1=array(M2G1.t/ms)
+    # Lt2G1=array(M3G1.t/ms)
+    # Lt1G2=array(M2G2.t/ms)
+    # Lt2G2=array(M3G2.t/ms)
+    # LVG1=[]
+    # LwG1=[]
+    # LVG2=[]
+    # LwG2=[]
 
-    LgseG1=[]
-    LgsiG1=[]
-    LgseG2=[]
-    LgsiG2=[]
+    # LgseG1=[]
+    # LgsiG1=[]
+    # LgseG2=[]
+    # LgsiG2=[]
 
-    for a in range(rec1):
-        LVG1.append(array(M2G1[a].v))
-        LwG1.append(array(M3G1[a].u))
-        LgseG1.append(array(M4G1[a].GsynE/nS))
-        LgsiG1.append(array(M5G1[a].GsynI/nS))
+    # for a in range(rec1):
+    #     LVG1.append(array(M2G1[a].v))
+    #     LwG1.append(array(M3G1[a].u))
+    #     LgseG1.append(array(M4G1[a].GsynE/nS))
+    #     LgsiG1.append(array(M5G1[a].GsynI/nS))
 
-    for a in range(rec2):
-        LVG2.append(array(M2G2[a].v))
-        LwG2.append(array(M3G2[a].u))
-        LgseG2.append(array(M4G2[a].GsynE/nS))
-        LgsiG2.append(array(M5G2[a].GsynI/nS))
-
-
-
-    #create the figure
-    fig=plt.figure(figsize=(12,8))
-    ax1=fig.add_subplot(221)
-    ax2=fig.add_subplot(222)
-    ax3=fig.add_subplot(223)
-    ax4=fig.add_subplot(224)
-
-    for a in range(len(LVG1)):
-        ax1.plot(Lt1G1, LVG1[a], color ='r')
-        ax1.plot(Lt1G1, LVG1[a], ls=(0, (2,6))) 
-        ax3.plot(Lt2G1, LwG1[a],color ='r')
-        ax3.plot(Lt2G1, LwG1[a],ls=(0, (2,6))) 
-
-
-    for a in range(len(LgseG1)):
-        ax2.plot(Lt1G1, LgsiG1[a], color ='r')
-        ax2.plot(Lt1G1, LgsiG1[a], ls=(0, (2,6))) 
-        ax2.plot(Lt1G1, LgseG1[a], color ='g')
-        ax2.plot(Lt1G1, LgseG1[a], ls=(0, (2,6))) 
-
-    for a in range(len(LVG2)):
-        ax1.plot(Lt1G2, LVG2[a],color ='g')
-        ax1.plot(Lt1G2, LVG2[a], ls=(0, (2,6))) 
-        ax3.plot(Lt2G2, LwG2[a],color ='g')
-        ax3.plot(Lt2G2, LwG2[a], ls=(0, (2,6)))
-
-    for a in range(len(LgsiG2)):
-        ax4.plot(Lt1G1, LgsiG2[a], color ='r')
-        ax4.plot(Lt1G1, LgsiG2[a], ls=(0, (2,6))) 
-        ax4.plot(Lt1G1, LgseG2[a], color ='g')
-        ax4.plot(Lt1G1, LgseG2[a], ls=(0, (2,6))) 
+    # for a in range(rec2):
+    #     LVG2.append(array(M2G2[a].v))
+    #     LwG2.append(array(M3G2[a].u))
+    #     LgseG2.append(array(M4G2[a].GsynE/nS))
+    #     LgsiG2.append(array(M5G2[a].GsynI/nS))
 
 
 
-    # prepare raster plot
-    RasG_inh = array([M1G_inh.t/ms, [i+N2 for i in M1G_inh.i]])
-    RasG_exc = array([M1G_exc.t/ms, M1G_exc.i])
+    # #create the figure
+    # fig=plt.figure(figsize=(12,8))
+    # ax1=fig.add_subplot(221)
+    # ax2=fig.add_subplot(222)
+    # ax3=fig.add_subplot(223)
+    # ax4=fig.add_subplot(224)
+
+    # for a in range(len(LVG1)):
+    #     ax1.plot(Lt1G1, LVG1[a], color ='r')
+    #     ax1.plot(Lt1G1, LVG1[a], ls=(0, (2,6))) 
+    #     ax3.plot(Lt2G1, LwG1[a],color ='r')
+    #     ax3.plot(Lt2G1, LwG1[a],ls=(0, (2,6))) 
+
+
+    # for a in range(len(LgseG1)):
+    #     ax2.plot(Lt1G1, LgsiG1[a], color ='r')
+    #     ax2.plot(Lt1G1, LgsiG1[a], ls=(0, (2,6))) 
+    #     ax2.plot(Lt1G1, LgseG1[a], color ='g')
+    #     ax2.plot(Lt1G1, LgseG1[a], ls=(0, (2,6))) 
+
+    # for a in range(len(LVG2)):
+    #     ax1.plot(Lt1G2, LVG2[a],color ='g')
+    #     ax1.plot(Lt1G2, LVG2[a], ls=(0, (2,6))) 
+    #     ax3.plot(Lt2G2, LwG2[a],color ='g')
+    #     ax3.plot(Lt2G2, LwG2[a], ls=(0, (2,6)))
+
+    # for a in range(len(LgsiG2)):
+    #     ax4.plot(Lt1G1, LgsiG2[a], color ='r')
+    #     ax4.plot(Lt1G1, LgsiG2[a], ls=(0, (2,6))) 
+    #     ax4.plot(Lt1G1, LgseG2[a], color ='g')
+    #     ax4.plot(Lt1G1, LgseG2[a], ls=(0, (2,6))) 
 
 
 
-    # prepare firing rate
-    def bin_array(array, BIN, time_array):
-        N0 = int(BIN/(time_array[1]-time_array[0]))
-        N1 = int((time_array[-1]-time_array[0])/BIN)
-        return array[:N0*N1].reshape((N1,N0)).mean(axis=1)
+    # # prepare raster plot
+    # RasG_inh = array([M1G_inh.t/ms, [i+N2 for i in M1G_inh.i]])
+    # RasG_exc = array([M1G_exc.t/ms, M1G_exc.i])
 
-    BIN=5
-    time_array = arange(int(TotTime/DT))*DT
+
+
+    # BIN=5
+    # time_array = arange(int(TotTime/DT))*DT
 
 
 
@@ -245,52 +246,52 @@ def func():
 
 
 
-    # create the figure
+    # # create the figure
 
-    fig=figure(figsize=(8,12))
-    ax1=fig.add_subplot(211)
-    ax2=fig.add_subplot(212)
+    # fig=figure(figsize=(8,12))
+    # ax1=fig.add_subplot(211)
+    # ax2=fig.add_subplot(212)
 
 
-    ax1.plot(RasG_inh[0], RasG_inh[1], ',r')
-    ax1.plot(RasG_exc[0], RasG_exc[1], ',g')
+    # ax1.plot(RasG_inh[0], RasG_inh[1], ',r')
+    # ax1.plot(RasG_exc[0], RasG_exc[1], ',g')
 
-    ax1.set_xlabel('Time (ms)')
-    ax1.set_ylabel('Neuron index')
+    # ax1.set_xlabel('Time (ms)')
+    # ax1.set_ylabel('Neuron index')
 
-    ax2.plot(TimBinned,popRateG_inh, 'r')
-    ax2.plot(TimBinned,popRateG_exc, 'g')
+    # ax2.plot(TimBinned,popRateG_inh, 'r')
+    # ax2.plot(TimBinned,popRateG_exc, 'g')
 
-    ax2.set_xlabel('Time (ms)')
-    ax2.set_ylabel('Firing Rate (Hz)')
+    # ax2.set_xlabel('Time (ms)')
+    # ax2.set_ylabel('Firing Rate (Hz)')
 
     TimBinned,Pu=bin_array(time_array, BIN, time_array),bin_array(P2mon[0].P, BIN, time_array)
-    fig=plt.figure(figsize=(8,5))
-    ax3=fig.add_subplot(111)
-    ax2 = ax3.twinx()
-    ax3.plot(TimBinned/1000,popRateG_inh, 'r')
-    ax3.plot(TimBinned/1000,popRateG_exc, 'SteelBlue')
-    ax2.plot(TimBinned/1000,(Pu/8000), 'orange')
-    ax2.set_ylabel('mean u')
-    #ax2.set_ylim(0.0, 0.045)
-    ax3.set_xlabel('Time (s)')
-    ax3.set_ylabel('population Firing Rate')
+    # fig=plt.figure(figsize=(8,5))
+    # ax3=fig.add_subplot(111)
+    # ax2 = ax3.twinx()
+    # ax3.plot(TimBinned/1000,popRateG_inh, 'r')
+    # ax3.plot(TimBinned/1000,popRateG_exc, 'SteelBlue')
+    # ax2.plot(TimBinned/1000,(Pu/8000), 'orange')
+    # ax2.set_ylabel('mean u')
+    # #ax2.set_ylim(0.0, 0.045)
+    # ax3.set_xlabel('Time (s)')
+    # ax3.set_ylabel('population Firing Rate')
 
 
-    TimBinned,Pv=bin_array(time_array, BIN, time_array),bin_array(P2MuVemon[0].Pv, BIN, time_array)
-    fig=plt.figure(figsize=(12,5))
-    plt.plot(TimBinned/1000,(Pv/8000), 'blue')
-    #ax1=fig.add_subplot(211)
-    #ax2=fig.add_subplot(212)
-    #ax1.set_title('P neuron group')
-    #ax1.plot(P1mon.P[0])
-    #ax1.plot(P2mon.P[0])
-    #ax2.set_title('P received by the neuron')
-    #ax2.plot(G1mon.Pvar[0])
-    #ax2.plot(G2mon.Pvar[0])
+    # TimBinned,Pv=bin_array(time_array, BIN, time_array),bin_array(P2MuVemon[0].Pv, BIN, time_array)
+    # fig=plt.figure(figsize=(12,5))
+    # plt.plot(TimBinned/1000,(Pv/8000), 'blue')
+    # #ax1=fig.add_subplot(211)
+    # #ax2=fig.add_subplot(212)
+    # #ax1.set_title('P neuron group')
+    # #ax1.plot(P1mon.P[0])
+    # #ax1.plot(P2mon.P[0])
+    # #ax2.set_title('P received by the neuron')
+    # #ax2.plot(G1mon.Pvar[0])
+    # #ax2.plot(G2mon.Pvar[0])
 
-    fig.tight_layout()
+    # fig.tight_layout()
 
-    show()
+    # show()
 
 func()
