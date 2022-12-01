@@ -7,7 +7,7 @@ def bin_array(array, BIN, time_array):
     return array[:N0*N1].reshape((N1,N0)).mean(axis=1)
 
 
-def func():
+def func(giz):
     start_scope()
 
     DT=0.1 # time step
@@ -58,7 +58,7 @@ def func():
     G_inh.Ee=0.0
     G_inh.Ei=-80.
     G_inh.I=0.
-    G_inh.g_iz=0.04
+    G_inh.g_iz=giz
     G_inh.E_iz=-60
 
 
@@ -294,4 +294,11 @@ def func():
 
     # show()
 
-func()
+    return TimBinned, popRateG_exc, popRateG_inh, Pu
+
+data = []
+
+for giz in np.linspace(0.01, 1.0, 3):
+    print(f"giz = {giz}")
+    item = func(giz)
+    data.append(item)
