@@ -1,4 +1,5 @@
 from brian2 import *
+import pickle
 
 # prepare firing rate
 def bin_array(array, BIN, time_array):
@@ -233,8 +234,8 @@ def func(giz):
 
 
 
-    # BIN=5
-    # time_array = arange(int(TotTime/DT))*DT
+    BIN=5
+    time_array = arange(int(TotTime/DT))*DT
 
 
 
@@ -302,3 +303,6 @@ for giz in np.linspace(0.01, 1.0, 3):
     print(f"giz = {giz}")
     item = func(giz)
     data.append(item)
+
+with open('sim_giz.bin', 'wb') as fp:
+    pickle.dump(data, fp)
