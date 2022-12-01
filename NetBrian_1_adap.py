@@ -104,7 +104,7 @@ S_ed_in.connect(p=prbC)
 S_ed_ex = Synapses(P_ed, G_exc, on_pre='GsynE_post+=Qe')
 S_ed_ex.connect(p=prbC)
 
-
+#### recording trick for exc pop
 PgroupE = NeuronGroup(1, 'P:1', method='heun')
 		
 PE=Synapses(G_exc, PgroupE, 'P_post = u_pre : 1 (summed)')
@@ -117,6 +117,11 @@ PgroupMuVE = NeuronGroup(1, 'Pv:1', method='heun')
 PmuE=Synapses(G_exc, PgroupMuVE, 'Pv_post = v_pre : 1 (summed)')
 PmuE.connect(p=1)
 P2MuVemon = StateMonitor(PgroupMuVE, 'Pv', record=0)
+
+#PgroupMuGE = NeuronGroup(1, 'Pg:1', method='heun')
+ 
+
+#### recording trick for inhibitory pop
 
 
 
@@ -138,10 +143,10 @@ M3G1 = StateMonitor(G_inh, 'u', record=range(rec1))
 M4G1 = StateMonitor(G_inh, 'GsynE', record=range(rec1))
 M5G1 = StateMonitor(G_inh, 'GsynI', record=range(rec1))
 
-M2G2 = StateMonitor(G_inh, 'v', record=range(rec2))
-M3G2 = StateMonitor(G_inh, 'u', record=range(rec2))
-M4G2 = StateMonitor(G_inh, 'GsynE', record=range(rec2))
-M5G2 = StateMonitor(G_inh, 'GsynI', record=range(rec2))
+M2G2 = StateMonitor(G_exc, 'v', record=range(rec2))
+M3G2 = StateMonitor(G_exc, 'u', record=range(rec2))
+M4G2 = StateMonitor(G_exc, 'GsynE', record=range(rec2))
+M5G2 = StateMonitor(G_exc, 'GsynI', record=range(rec2))
 
 # Run simulation -------------------------------------------------------------------------------
 
@@ -177,6 +182,8 @@ for a in range(rec2):
     LwG2.append(array(M3G2[a].u))
     LgseG2.append(array(M4G2[a].GsynE/nS))
     LgsiG2.append(array(M5G2[a].GsynI/nS))
+
+
 
 #create the figure
 fig=plt.figure(figsize=(12,8))
