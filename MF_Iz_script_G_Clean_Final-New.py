@@ -18,9 +18,8 @@ import pandas as pd
 import scipy.special as sp_spec
 
 
-def func():
+def func(giz):
 	gizi=0.04 
-	giz=0.01
 	Eiz=-65.
 	Eizi=-60.
 	Ee=0.0
@@ -211,18 +210,47 @@ def func():
 	print('fe=',fecont)
 	print('fi=',ficont)
 
+	# plt.figure()
+
+	# plt.plot(t, LSfe)
+	# plt.plot(t, LSfi)
+	# plt.plot(t, LSw)
+
+	# #fig=plt.figure()
+	# #plt.plot(LSfe, LSfi)
+	# '''
+	# ax = fig.add_subplot(1, 1, 1, projection = '3d')
+	# ax.plot(LSfe, LSfi, LSw)
+	# plt.figure()
+	# plt.plot(LSfe,LSfi)
+	# plt.figure()
+	# plt.plot(t, LSw)
+	# '''
+	# plt.show()
+
+	# #f.close()
+
 	return {'LSfe': LSfe,
 			'LSfi': LSfi,
 			'LSw': LSw,
 			't': t,
+			'giz': giz,
 			}
 
 t1 = time.perf_counter()
 data = []
-for _ in range(1):
-	print("Run simulation")
-	item = func()
+
+for giz in np.linspace(0.01, 1.0, 20):
+	t3 = time.perf_counter()
+	print(f"Run simulation: giz={giz}")
+
+	item = func(giz)
+
 	data.append(item)
+	t4 = time.perf_counter()
+	print(f"sim time: {t4-t3:.0f} seconds")
+	print()
+
 t2 = time.perf_counter()
 print(f"Total time: {t2-t1:.0f} seconds")
 
