@@ -140,7 +140,7 @@ def func(giz):
 
     # Recording tools -------------------------------------------------------------------------------
     rec1=1
-    rec2=2
+    rec2=1 #2
 
     M1G_inh = SpikeMonitor(G_inh)
     FRG_inh = PopulationRateMonitor(G_inh)
@@ -244,8 +244,13 @@ def func(giz):
 
     LfrG_inh=array(FRG_inh.rate/Hz)
     TimBinned,popRateG_inh=bin_array(time_array, BIN, time_array),bin_array(LfrG_inh, BIN, time_array)
+    
 
+    LVG_inh=array(M2G1[0].v) 
+    pot_inh=bin_array(LVG_inh, BIN, time_array)
 
+    LVG_exc=array(M2G2[0].v) 
+    pot_exc=bin_array(LVG_exc, BIN, time_array)
 
     # # create the figure
 
@@ -267,6 +272,7 @@ def func(giz):
     # ax2.set_ylabel('Firing Rate (Hz)')
 
     TimBinned,Pu=bin_array(time_array, BIN, time_array),bin_array(P2mon[0].P, BIN, time_array)
+    Pu=Pu/8000
     # fig=plt.figure(figsize=(8,5))
     # ax3=fig.add_subplot(111)
     # ax2 = ax3.twinx()
@@ -295,14 +301,24 @@ def func(giz):
 
     # show()
 
-    return TimBinned, popRateG_exc, popRateG_inh, Pu
+    return {'TimBinned': TimBinned,
+            'popRateG_exc': popRateG_exc,
+            'popRateG_inh': popRateG_inh,
+            'Pu': Pu,
+            'giz': giz,
+            'pot_exc': pot_exc,
+            'pot_inh': pot_inh,
+
+            }
 
 data = []
 
-for giz in np.linspace(0.01, 1.0, 3):
+for giz in np.linspace(0.01, 1.0, 20):
     print(f"giz = {giz}")
     item = func(giz)
     data.append(item)
 
-with open('sim_giz.bin', 'wb') as fp:
+filename =  'sim_giz.bin'
+with open(filename, 'wb') as fp:
     pickle.dump(data, fp)
+print(f"Output written into {filename}")
