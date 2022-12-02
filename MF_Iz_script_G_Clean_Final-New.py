@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pylab as plt
 import mpl_toolkits.mplot3d.axes3d as axes3d
+import pickle
+import time
 import sys
 import matplotlib as mpl
 from matplotlib.colors import BoundaryNorm
@@ -209,24 +211,22 @@ def func():
 	print('fe=',fecont)
 	print('fi=',ficont)
 
-	plt.figure()
+	return {'LSfe': LSfe,
+			'LSfi': LSfi,
+			'LSw': LSw,
+			't': t,
+			}
 
-	plt.plot(t, LSfe)
-	plt.plot(t, LSfi)
-	plt.plot(t, LSw)
+t1 = time.perf_counter()
+data = []
+for _ in range(1):
+	print("Run simulation")
+	item = func()
+	data.append(item)
+t2 = time.perf_counter()
+print(f"Total time: {t2-t1:.0f} seconds")
 
-	#fig=plt.figure()
-	#plt.plot(LSfe, LSfi)
-	'''
-	ax = fig.add_subplot(1, 1, 1, projection = '3d')
-	ax.plot(LSfe, LSfi, LSw)
-	plt.figure()
-	plt.plot(LSfe,LSfi)
-	plt.figure()
-	plt.plot(t, LSw)
-	'''
-	plt.show()
-
-	#f.close()
-
-func()
+filename = 'MF_sim.bin'
+with open(filename, 'wb') as fp:
+    pickle.dump(data, fp)
+print(f"Output written into {filename}")
